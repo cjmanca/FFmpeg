@@ -598,8 +598,6 @@ void ff_sws_init_scale(SwsContext *c)
     ff_sws_init_swscale_aarch64(c);
 #elif ARCH_ARM
     ff_sws_init_swscale_arm(c);
-#elif ARCH_LOONGARCH64
-    ff_sws_init_swscale_loongarch(c);
 #endif
 }
 

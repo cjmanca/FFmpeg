@@ -359,6 +359,7 @@ extern const AVFilter ff_vf_multiply;
 extern const AVFilter ff_vf_negate;
 extern const AVFilter ff_vf_nlmeans;
 extern const AVFilter ff_vf_nlmeans_opencl;
+extern const AVFilter ff_vf_nlmeans_cuda;
 extern const AVFilter ff_vf_nnedi;
 extern const AVFilter ff_vf_noformat;
 extern const AVFilter ff_vf_noise;

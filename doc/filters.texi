@@ -17138,6 +17138,10 @@ Same as @option{r} but for chroma planes.
 The default value is @var{0} and means automatic.
 @end table
 
+@section nlmeans_cuda
+
+Non-local Means denoise filter through CUDA, this filter accepts same options as @ref{nlmeans}.
+
 @section nnedi
 
 Deinterlace video using neural network edge directed interpolation.

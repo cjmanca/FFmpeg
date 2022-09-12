@@ -1,0 +1,53 @@
+diff --git a/configure b/configure
+index 9e51abd0d3..b02c712051 100755
+--- a/configure
++++ b/configure
+@@ -3163,6 +3163,8 @@ thumbnail_cuda_filter_deps_any="cuda_nvcc cuda_llvm"
+ transpose_npp_filter_deps="ffnvcodec libnpp"
+ overlay_cuda_filter_deps="ffnvcodec"
+ overlay_cuda_filter_deps_any="cuda_nvcc cuda_llvm"
+++nlmeans_cuda_filter_deps="ffnvcodec"
+++nlmeans_cuda_filter_deps_any="cuda_nvcc cuda_llvm"
+ sharpen_npp_filter_deps="ffnvcodec libnpp"
+ 
+ ddagrab_filter_deps="d3d11va IDXGIOutput1 DXGI_OUTDUPL_FRAME_INFO"
+diff --git a/doc/filters.texi b/doc/filters.texi
+index dbc08163d8..97889930e1 100644
+--- a/doc/filters.texi
++++ b/doc/filters.texi
+@@ -17138,6 +17138,10 @@ Same as @option{r} but for chroma planes.
+ The default value is @var{0} and means automatic.
+ @end table
+ 
++@section nlmeans_cuda
++
++Non-local Means denoise filter through CUDA, this filter accepts same options as @ref{nlmeans}.
++
+ @section nnedi
+ 
+ Deinterlace video using neural network edge directed interpolation.
+diff --git a/libavfilter/Makefile b/libavfilter/Makefile
+index 841ec47141..992b482015 100644
+--- a/libavfilter/Makefile
++++ b/libavfilter/Makefile
+@@ -378,6 +378,8 @@ OBJS-$(CONFIG_MULTIPLY_FILTER)               += vf_multiply.o
+ OBJS-$(CONFIG_NEGATE_FILTER)                 += vf_negate.o
+ OBJS-$(CONFIG_NLMEANS_FILTER)                += vf_nlmeans.o
+ OBJS-$(CONFIG_NLMEANS_OPENCL_FILTER)         += vf_nlmeans_opencl.o opencl.o opencl/nlmeans.o
++OBJS-$(CONFIG_NLMEANS_CUDA_FILTER)           += vf_nlmeans_cuda.o vf_nlmeans_cuda.ptx.o \
++                                                cuda/load_helper.o
+ OBJS-$(CONFIG_NNEDI_FILTER)                  += vf_nnedi.o
+ OBJS-$(CONFIG_NOFORMAT_FILTER)               += vf_format.o
+ OBJS-$(CONFIG_NOISE_FILTER)                  += vf_noise.o
+diff --git a/libavfilter/allfilters.c b/libavfilter/allfilters.c
+index 79e8a16bbc..71fa7fd953 100644
+--- a/libavfilter/allfilters.c
++++ b/libavfilter/allfilters.c
+@@ -359,6 +359,7 @@ extern const AVFilter ff_vf_multiply;
+ extern const AVFilter ff_vf_negate;
+ extern const AVFilter ff_vf_nlmeans;
+ extern const AVFilter ff_vf_nlmeans_opencl;
++extern const AVFilter ff_vf_nlmeans_cuda;
+ extern const AVFilter ff_vf_nnedi;
+ extern const AVFilter ff_vf_noformat;
+ extern const AVFilter ff_vf_noise;
